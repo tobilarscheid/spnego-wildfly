@@ -146,6 +146,8 @@ public final class SpnegoAuthenticator {
         this.serverCredentials = SpnegoProvider.getServerCredential(this.loginContext.getSubject());
 
         this.serverPrincipal = new KerberosPrincipal(this.serverCredentials.getName().toString());
+
+        this.allowLocalhost = Boolean.getBoolean(Constants.ALLOW_LOCALHOST);
     }
 
     /**
