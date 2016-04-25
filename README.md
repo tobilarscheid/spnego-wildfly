@@ -42,6 +42,7 @@ Installation
               <module-option name="useKeyTab" value="true"/>
               <module-option name="keyTab"    value="path-to-ketytab"/>
               <module-option name="principal" value="keytab-principal"/>
+              <module-option name="isInitiator" value="false"/>
               -->
             </login-module>
           </authentication>
@@ -63,7 +64,7 @@ Installation
         <dependency>
            <groupId>de.ctrlaltdel</groupId>
            <artifactId>spnego-auth</artifactId>
-           <version>1.0</version>
+           <version>1.0.1</version>
         </dependency>
 	
 
