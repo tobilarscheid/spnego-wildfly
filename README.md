@@ -64,7 +64,7 @@ Installation
         <dependency>
            <groupId>de.ctrlaltdel</groupId>
            <artifactId>spnego-auth</artifactId>
-           <version>1.0</version>
+           <version>1.0.1</version>
         </dependency>
 	
 
