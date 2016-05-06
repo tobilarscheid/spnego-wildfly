@@ -27,9 +27,7 @@ public class SpnegoAckLoginModule implements LoginModule {
 	}
 
 	@Override
-	@SuppressWarnings("unchecked")
 	public boolean login() throws LoginException {
-
 		System.out.println("login called");
 		return true;
 	}

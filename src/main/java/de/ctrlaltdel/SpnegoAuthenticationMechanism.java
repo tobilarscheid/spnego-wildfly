@@ -1,6 +1,7 @@
 package de.ctrlaltdel;
 
 import java.security.Principal;
+import java.util.Collections;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletResponse;
@@ -37,7 +38,7 @@ public class SpnegoAuthenticationMechanism implements AuthenticationMechanism {
 	public AuthenticationMechanismOutcome authenticate(HttpServerExchange exchange, SecurityContext securityContext) {
 
 		System.out.println("authenticate called");
-		Account account = new AccountImpl("myAccount");
+		Account account = new AccountImpl(new SimplePrincipal("me", "me"), Collections.<String> emptySet(), "me");
 		securityContext.authenticationComplete(account, mechanismName, true);
 		return AuthenticationMechanismOutcome.AUTHENTICATED;
 
