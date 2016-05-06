@@ -4,9 +4,13 @@ import java.security.Principal;
 import java.util.Map;
 
 import javax.security.auth.Subject;
+import javax.security.auth.callback.Callback;
 import javax.security.auth.callback.CallbackHandler;
+import javax.security.auth.callback.NameCallback;
 import javax.security.auth.login.LoginException;
 import javax.security.auth.spi.LoginModule;
+
+import de.ctrlaltdel.SpnegoAuthenticationMechanism.SimplePrincipal;
 
 /**
  * SpnegoAckLoginModule
@@ -26,14 +30,32 @@ public class SpnegoAckLoginModule implements LoginModule {
 		this.callbackHandler = callbackHandler;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public boolean login() throws LoginException {
+		NameCallback nc = new NameCallback("name");
+		try {
+			callbackHandler.handle(new Callback[] { nc });
+		} catch (Exception x) {
+			throw new LoginException(x.getMessage());
+		}
+
+		String name = nc.getName();
+		String credential = null;
+
+		SimplePrincipal simplePrincipal = new SimplePrincipal(name, credential);
+
+		sharedState.put("javax.security.auth.login.name", simplePrincipal.getName());
+		sharedState.put("javax.security.auth.login.password", simplePrincipal.getCredential());
+
+		this.principal = simplePrincipal;
 		System.out.println("login called");
 		return true;
 	}
 
 	@Override
 	public boolean commit() throws LoginException {
+		subject.getPrincipals().add(principal);
 		System.out.println("commit called");
 		return true;
 	}
