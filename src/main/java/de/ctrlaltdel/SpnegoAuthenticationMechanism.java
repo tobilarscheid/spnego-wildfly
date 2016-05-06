@@ -7,10 +7,12 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.wildfly.extension.undertow.security.AccountImpl;
 
 import io.undertow.security.api.AuthenticationMechanism;
 import io.undertow.security.api.AuthenticationMechanismFactory;
 import io.undertow.security.api.SecurityContext;
+import io.undertow.security.idm.Account;
 import io.undertow.server.HttpServerExchange;
 import io.undertow.server.handlers.form.FormParserFactory;
 
@@ -35,7 +37,8 @@ public class SpnegoAuthenticationMechanism implements AuthenticationMechanism {
 	public AuthenticationMechanismOutcome authenticate(HttpServerExchange exchange, SecurityContext securityContext) {
 
 		System.out.println("authenticate called");
-
+		Account account = new AccountImpl("myAccount");
+		securityContext.authenticationComplete(account, mechanismName, true);
 		return AuthenticationMechanismOutcome.AUTHENTICATED;
 
 	}
