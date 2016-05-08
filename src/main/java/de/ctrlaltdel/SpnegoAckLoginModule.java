@@ -33,10 +33,12 @@ public class SpnegoAckLoginModule implements LoginModule {
 	@SuppressWarnings("unchecked")
 	@Override
 	public boolean login() throws LoginException {
+		System.out.println("login called1");
 		NameCallback nc = new NameCallback("name");
 		try {
 			callbackHandler.handle(new Callback[] { nc });
 		} catch (Exception x) {
+			x.printStackTrace();
 			throw new LoginException(x.getMessage());
 		}
 
@@ -49,7 +51,7 @@ public class SpnegoAckLoginModule implements LoginModule {
 		sharedState.put("javax.security.auth.login.password", simplePrincipal.getCredential());
 
 		this.principal = simplePrincipal;
-		System.out.println("login called");
+		System.out.println("login called2");
 		return true;
 	}
 
