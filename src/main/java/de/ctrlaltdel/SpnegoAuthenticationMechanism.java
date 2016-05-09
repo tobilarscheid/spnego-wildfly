@@ -1,7 +1,7 @@
 package de.ctrlaltdel;
 
 import java.security.Principal;
-import java.util.Collections;
+import java.util.HashSet;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletResponse;
@@ -43,8 +43,9 @@ public class SpnegoAuthenticationMechanism implements AuthenticationMechanism {
 		SimplePrincipal principal = new SimplePrincipal("me", String.valueOf(System.currentTimeMillis()));
 
 		IdentityManager identityManager = securityContext.getIdentityManager();
-		Account account = identityManager
-				.verify(new AccountImpl(principal, Collections.<String> emptySet(), principal.getCredential()));
+		HashSet<String> roles = new HashSet<>();
+		roles.add("loginUser");
+		Account account = identityManager.verify(new AccountImpl(principal, roles, principal.getCredential()));
 
 		securityContext.authenticationComplete(account, mechanismName, true);
 
