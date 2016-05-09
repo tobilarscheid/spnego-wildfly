@@ -43,8 +43,11 @@ public class SpnegoAuthenticationMechanism implements AuthenticationMechanism {
 		SimplePrincipal principal = new SimplePrincipal("me", String.valueOf(System.currentTimeMillis()));
 
 		IdentityManager identityManager = securityContext.getIdentityManager();
-		Account account = identityManager
-				.verify(new AccountImpl(principal, Collections.<String> emptySet(), principal.getCredential()));
+		// Account account = identityManager
+		// .verify(new AccountImpl(principal, Collections.<String> emptySet(),
+		// principal.getCredential()));
+
+		Account account = new AccountImpl(principal, Collections.<String> emptySet(), principal.getCredential());
 
 		securityContext.authenticationComplete(account, mechanismName, true);
 
