@@ -1,7 +1,7 @@
 package de.ctrlaltdel;
 
 import java.security.Principal;
-import java.util.HashSet;
+import java.util.Collections;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletResponse;
@@ -14,6 +14,7 @@ import io.undertow.security.api.AuthenticationMechanism;
 import io.undertow.security.api.AuthenticationMechanismFactory;
 import io.undertow.security.api.SecurityContext;
 import io.undertow.security.idm.Account;
+import io.undertow.security.idm.IdentityManager;
 import io.undertow.server.HttpServerExchange;
 import io.undertow.server.handlers.form.FormParserFactory;
 
@@ -38,10 +39,17 @@ public class SpnegoAuthenticationMechanism implements AuthenticationMechanism {
 	public AuthenticationMechanismOutcome authenticate(HttpServerExchange exchange, SecurityContext securityContext) {
 
 		System.out.println("authenticate called");
-		HashSet<String> roles = new HashSet<>();
-		roles.add("loginUser");
-		Account account = new AccountImpl(new SimplePrincipal("me", "me"), roles, "me");
+
+		SimplePrincipal principal = new SimplePrincipal("me", String.valueOf(System.currentTimeMillis()));
+
+		IdentityManager identityManager = securityContext.getIdentityManager();
+		Account account = identityManager
+				.verify(new AccountImpl(principal, Collections.<String> emptySet(), principal.getCredential()));
+
 		securityContext.authenticationComplete(account, mechanismName, true);
+
+		LOG.debug("authentificated {}", principal);
+
 		return AuthenticationMechanismOutcome.AUTHENTICATED;
 
 	}
@@ -67,7 +75,6 @@ public class SpnegoAuthenticationMechanism implements AuthenticationMechanism {
 
 		public SimplePrincipal(String name, String credential) {
 			this.credential = credential;
-			int idx = name.indexOf('@');
 			this.name = name;
 		}
 
