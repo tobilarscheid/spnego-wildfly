@@ -68,7 +68,7 @@ public class SpnegoAuthenticationMechanism implements AuthenticationMechanism {
 		public SimplePrincipal(String name, String credential) {
 			this.credential = credential;
 			int idx = name.indexOf('@');
-			this.name = 0 < idx ? name.substring(0, idx) : name;
+			this.name = name;
 		}
 
 		@Override
